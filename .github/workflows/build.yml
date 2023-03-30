@@ -21,7 +21,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-18.04, macos-latest, windows-latest]
+        os: [macos-latest]
 
     steps:
       - uses: actions/checkout@v2
@@ -68,10 +68,18 @@ jobs:
           MSSdk: 1
 
       - name: Install cibuildwheel & build wheels (Linux & MacOS)
-        if: runner.os != 'Windows'
+        if: runner.os == 'Linux'
         run: |
           python -m pip --disable-pip-version-check install cibuildwheel==1.10.0
           python -m cibuildwheel --output-dir wheelhouse
+      
+      - name: Install cibuildwheel & build wheels (MacOS Silicon)
+        if: runner.os == "macOS"
+        run: |
+          python -m pip --disable-pip-version-check install cibuildwheel==1.10.0
+          python -m cibuildwheel --output-dir wheelhouse
+        env:
+          CIBW_ARCHS_MACOS: x86_64 arm64
 
       - uses: actions/upload-artifact@v2
         with:
