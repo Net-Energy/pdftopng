@@ -74,7 +74,7 @@ jobs:
           python -m cibuildwheel --output-dir wheelhouse
       
       - name: Install cibuildwheel & build wheels (MacOS Silicon)
-        if: runner.os == "macOS"
+        if: runner.os == 'macOS'
         run: |
           python -m pip --disable-pip-version-check install cibuildwheel==1.10.0
           python -m cibuildwheel --output-dir wheelhouse
